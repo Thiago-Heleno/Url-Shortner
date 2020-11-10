@@ -23,35 +23,38 @@ main{
   height: auto;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 }
+
 
 form{
   display: flex;
   flex-direction: column;
   width: 60%;
+  margin-bottom: 2rem;
 }
 
-form input{
+input{
   padding: .5rem;
   border-radius: 5px;
   border-width: 0px;
   color: black;
   background:rgba(187, 187, 187, 0.3);
 }
-form input:focus {
+input:focus {
   outline-width: 0;
 }
 
 
-form input::-webkit-input-placeholder {
+input::-webkit-input-placeholder {
   color: #AAA;
 }
 
-form input:focus::-webkit-input-placeholder {
+input:focus::-webkit-input-placeholder {
   color: dodgerblue;
 }
 
-form input:focus+.underline {
+input:focus+.underline {
   transform: scale(1);
 }
 
@@ -62,7 +65,7 @@ form input:focus+.underline {
   -webkit-transform: scale(0, 1);
   transform: scale(0, 1);
   -webkit-transition: all 0.5s linear;
-  transition: all 0.5s linear;
+  transition: all 0.3s linear;
   width: 100%;
   margin-bottom: 1rem;
 }
@@ -71,7 +74,7 @@ form input:focus+.underline {
 
 
 
-form button{
+button{
   padding: .5rem;
   text-align: center;
   cursor: pointer;
@@ -95,4 +98,3 @@ button:active {
   box-shadow: 0 5px #666;
   transform: translateY(4px);
 }
-

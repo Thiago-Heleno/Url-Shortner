@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="styles.css">
   <title>sh</title>
 </head>
+
 <body>
   <header>
     <h1>Sh everything</h1>
@@ -13,24 +15,63 @@
   </header>
   <main id="app">
     <form @submit.prevent="createUrl()">
+      <input placeholder="Slug (Optional)" class v-model="slug" name="slug" id="slug">
+      <span class="underline"></span>
       <input placeholder="Url to Shorten" class v-model="url" name="url" id="url">
       <span class="underline"></span>
       <button type="submit">Create</button>
     </form>
+    <p>{{created.message}}</p>
+    <div class="result" v-if="redirectUrl">
+      <p>{{copied}}</p>
+      <input v-bind:value="redirectUrl" id="testing-code">
+      <button @click.stop.prevent="copyToClipboard">Copy text</button>
+    </div>
   </main>
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script>
     const app = new Vue({
       el: "#app",
       data: {
-        url: ""
+        url: "",
+        slug: "",
+        copied: null,
+        created: "output",
+        redirectUrl: null,
       },
       methods: {
-        createUrl(){
-          console.log(this.url)
+        async createUrl() {
+          const response = await fetch('/url', {
+            method: 'POST',
+            headers: {
+              'content-type': 'application/json',
+            },
+            body: JSON.stringify({
+              url: this.url,
+              slug: this.slug
+            })
+          })
+          this.created = await response.json();
+          this.redirectUrl = "https://sh-it.thiago-heleno.vercel.app/" + this.created.slug
+        },
+        copyToClipboard() {
+          let testingCodeToCopy = document.querySelector('#testing-code')
+          testingCodeToCopy.setAttribute('type', 'text')
+          testingCodeToCopy.select()
+
+          try {
+            var successful = document.execCommand('copy');
+            this.copied = "Copied to Clipboard"
+          } catch (err) {
+            alert('Oops, unable to copy');
+          }
+
+          /* unselect the range */
+          window.getSelection().removeAllRanges()
         }
       }
     })
   </script>
 </body>
+
 </html>
