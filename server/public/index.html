@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>sh</title>
+</head>
+<body>
+  <header>
+    <h1>Sh everything</h1>
+    <p>short urls faster than light</p>
+  </header>
+  <main id="app">
+    <form @submit.prevent="createUrl()">
+      <input placeholder="Url to Shorten" class v-model="url" name="url" id="url">
+      <span class="underline"></span>
+      <button type="submit">Create</button>
+    </form>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+    const app = new Vue({
+      el: "#app",
+      data: {
+        url: ""
+      },
+      methods: {
+        createUrl(){
+          console.log(this.url)
+        }
+      }
+    })
+  </script>
+</body>
+</html>

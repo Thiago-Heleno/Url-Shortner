@@ -1,0 +1,98 @@
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Comic Sans MS", "Comic Sans", cursive;
+}
+
+body{
+  background-color: #fff;
+}
+
+header{
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+  flex-direction: column;
+  text-align: center;
+}
+
+main{
+  display: flex;
+  width: 100%;
+  height: auto;
+  justify-content: center;
+  align-items: center;
+}
+
+form{
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+}
+
+form input{
+  padding: .5rem;
+  border-radius: 5px;
+  border-width: 0px;
+  color: black;
+  background:rgba(187, 187, 187, 0.3);
+}
+form input:focus {
+  outline-width: 0;
+}
+
+
+form input::-webkit-input-placeholder {
+  color: #AAA;
+}
+
+form input:focus::-webkit-input-placeholder {
+  color: dodgerblue;
+}
+
+form input:focus+.underline {
+  transform: scale(1);
+}
+
+.underline {
+  background-color: dodgerblue;
+  display: inline-block;
+  height: 2px;
+  -webkit-transform: scale(0, 1);
+  transform: scale(0, 1);
+  -webkit-transition: all 0.5s linear;
+  transition: all 0.5s linear;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+
+
+
+
+form button{
+  padding: .5rem;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  box-shadow: 0 8px rgb(185, 185, 185);
+  background-color: #fff;
+  border-width: 1px;
+  border-color: black;
+  border-radius: 15px;
+  transition: 0.3s;
+}
+button:focus {
+  outline-width: 0;
+}
+button:hover{
+  background-color: #44aa47;
+}
+
+button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
