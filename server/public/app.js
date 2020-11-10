@@ -2,7 +2,7 @@ const app = new Vue({
   el: "#app",
   data: {
     url: "",
-    slug: "",
+    slug: null,
     copied: null,
     created: "output",
     redirectUrl: null,

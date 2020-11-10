@@ -24,7 +24,7 @@ app.use(express.static(__dirname + '/public'))
 
 
 const schema = yup.object().shape({
-  slug: yup.string().trim().matches(/[\w\-]/i),
+  slug: yup.string().trim().matches(/[\w\-]/i).nullable(),
   url: yup.string().trim().url().required(),
 })
 app.post('/url', async (req, res, next)=>{
@@ -36,6 +36,7 @@ app.post('/url', async (req, res, next)=>{
     })
     if(!slug){
       slug = nanoid(5);
+      console.log(slug)
     }else{
       const existing = await urls.findOne({slug});
       if(existing){
