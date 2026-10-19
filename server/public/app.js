@@ -20,7 +20,7 @@ const app = new Vue({
         })
       })
       this.created = await response.json();
-      this.redirectUrl = "https://sh-everything.herokuapp.com/" + this.created.slug
+      this.redirectUrl = location.origin + "/" + this.created.slug
     },
     copyToClipboard() {
       let testingCodeToCopy = document.querySelector('#testing-code')
