@@ -13,6 +13,8 @@ const insertUrl = db.prepare('INSERT INTO urls (slug, url) VALUES (?, ?)')
 
 
 const app = express()
+// Keep db reachable: on Node < 22.13 a garbage-collected db finalizes its statements.
+app.locals.db = db
 //app.use(helmet())
 app.use(morgan('tiny'))
 app.use(cors())
