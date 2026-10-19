@@ -2,17 +2,14 @@ const express = require('express')
 const helmet = require('helmet')
 const morgan = require('morgan')
 const cors = require('cors')
-const monk = require('monk')
 const yup = require('yup')
 const { nanoid } = require('nanoid')
+const { DatabaseSync } = require('node:sqlite') // needs Node 22.5+
 
-const url = 'mongodb+srv://root:plokijuhyg@brskins.lt8cf.mongodb.net/brskins?retryWrites=true&w=majority'
-const db = monk(url)
-db.then(()=>{
-  console.log("Connected to DB");
-})
-const urls = db.get('urls')
-urls.createIndex({slug: 1}, {unique: true})
+const db = new DatabaseSync(process.env.DB_PATH || __dirname + '/urls.db')
+db.exec('CREATE TABLE IF NOT EXISTS urls (slug TEXT PRIMARY KEY, url TEXT NOT NULL)')
+const findUrl = db.prepare('SELECT slug, url FROM urls WHERE slug = ?')
+const insertUrl = db.prepare('INSERT INTO urls (slug, url) VALUES (?, ?)')
 
 
 const app = express()
@@ -34,22 +31,12 @@ app.post('/url', async (req, res, next)=>{
       slug,
       url
     })
-    if(!slug){
-      slug = nanoid(5);
-      console.log(slug)
-    }else{
-      const existing = await urls.findOne({slug});
-      if(existing){
-        throw new Error('Slug in use!')
-      }
+    slug = (slug || nanoid(5)).toLowerCase()
+    if(findUrl.get(slug)){
+      throw new Error('Slug in use!')
     }
-    slug = slug.toLowerCase()
-    const newUrl = {
-      slug,
-      url,
-    }
-    const created = await urls.insert(newUrl)
-    res.json(created)
+    insertUrl.run(slug, url)
+    res.json({ slug, url })
   } catch (error) {
     next(error)
   }
@@ -58,9 +45,9 @@ app.post('/url', async (req, res, next)=>{
 app.get('/:id', async (req, res, next)=>{
   const { id: slug } = req.params;
   try {
-    const url = await urls.findOne({ slug })
-    if(url){
-      res.redirect(url.url);
+    const row = findUrl.get(slug)
+    if(row){
+      return res.redirect(row.url);
     }
     res.redirect('/?error=${slug} not found')
   } catch (error) {
